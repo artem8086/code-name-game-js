@@ -74,6 +74,7 @@ class Animation
 
 	@props: []
 	@propsUsed: []
+	@propsStack: []
 
 	reset: ->
 		@startTime = getTime()
@@ -146,6 +147,20 @@ class Animation
 			if use
 				node[name] = props[name]
 				delete propsUsed[name]
+		this
+
+	save: ->
+		stack = Animation.propsStack
+		stack.push Animation.props
+		stack.push Animation.propsUsed
+		Animation.props = []
+		Animation.propsUsed = []
+		this
+
+	restore: ->
+		stack = Animation.propsStack
+		Animation.propsUsed = stack.pop()
+		Animation.props = stack.pop()
 		this
 
 	createWorkFrame: ->
