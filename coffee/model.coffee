@@ -147,7 +147,7 @@ drawTypeObj =
 				g.translate @x || 0, @y || 0
 				model.animation.save()
 				drawNode.call node, g, model, opacity
-				model.animation.recive()
+				model.animation.restore()
 				# Recive model data
 		model.data = tData
 		this
@@ -254,7 +254,7 @@ drawNode = (g, model, opacity) ->
 			if !node.hide
 				drawNode.call node, g, model, opacity
 		#
-		model.animation.recive()
+		model.animation.restore()
 
 	g.beginPath()
 	drawTypeObj[@type]?.call this, g, model, opacity
