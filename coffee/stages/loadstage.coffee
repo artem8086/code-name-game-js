@@ -61,6 +61,8 @@ class LoadStage
 					stage.isloaded = true
 					setTimeout (=> @gamecore.setStage stage), LOADER_DELAY
 					@gamecore.loader.off 'load'
+			else
+				@gamecore.setStage stage
 
 	draw: ->
 		@drawstage.draw()
