@@ -2,6 +2,7 @@ import { Animation } from './animation'
 import { EventEmmiter } from './events'
 import { GameControl } from './gamecontrol'
 import { LoadStage } from './stages/loadstage'
+import { MainMenuStage } from './stages/menustage'
 import { Locale } from './locale'
 # import { Engine } from './engine'
 import { Loader } from './loader'
@@ -34,14 +35,16 @@ class GameCore extends EventEmmiter
 		super()
 		@loader = new Loader
 		@gamescreen = $ '.gamescreen'
-		@setStage new LoadStage this
+		@loadStage = new LoadStage this
+		@stages =
+			mainmenu: new MainMenuStage this
 		@time = Animation.getTime()
 		@delta = 0
 		@fill = '#000'
 
 	load: ->
 		@setLocale 'ru'
-		@stage?.load?()
+		@loadStage.setStage 'mainmenu'
 		this
 
 	setLocale: (locale) ->

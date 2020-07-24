@@ -1,7 +1,7 @@
 import { Model, ModelData } from '../model'
 import { DrawStage } from '../drawstage'
-import { MainMenuStage } from './menustage'
 
+LOADER_DELAY = 500
 RADIUS = 40
 
 modelLoaderData =
@@ -33,20 +33,27 @@ loaderAnimFrame =
 class LoadStage
 	constructor: (@gamecore) ->
 		@camera = x: 0, y: 0, z: 1
+		@drawstage = new DrawStage @gamecore.context, @camera
+		@model = new Model (new ModelData).loadData @gamecore.loader, modelLoaderData
+		@model.animation.setFrame loaderAnimFrame
+		@drawstage.addNode @model, 'loader'
 
 	set: ->
 		@gamecore.fill = '#000'
 		this
 
+	setStage: (stage) ->
+		@stage =
+			if typeof stage == 'string'
+				@gamecore.stages[stage]
+			else stage
+		@gamecore.setStage this
+		@load()
+
 	load: ->
-		@drawstage = new DrawStage @gamecore.context, @camera
-		@model = new Model (new ModelData).loadData @gamecore.loader, modelLoaderData
-		@model.animation.setFrame loaderAnimFrame
-		@drawstage.addNode @model, 'loader'
-		mainmenu = new MainMenuStage @gamecore
-		mainmenu.load()
+		@stage?.load?()
 		@gamecore.loader.on 'load', =>
-			setTimeout (=> @gamecore.setStage mainmenu), 300
+			setTimeout (=> @gamecore.setStage @stage), LOADER_DELAY
 			@gamecore.loader.off 'load'
 
 	draw: ->
