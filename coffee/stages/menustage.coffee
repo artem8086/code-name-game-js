@@ -3,6 +3,8 @@ import { Model, ModelData } from '../model'
 import { DrawStage } from '../drawstage'
 
 class MainMenuStage
+	name: 'mainmenu'
+
 	constructor: (@gamecore) ->
 		@camera = x: 0, y: 0, z: 1
 

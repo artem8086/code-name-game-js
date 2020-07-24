@@ -34,7 +34,7 @@ class GameCore extends EventEmmiter
 	constructor: (@canvas, @context, @mode = 'easy') ->
 		super()
 		@loader = new Loader
-		@gamescreen = $ '.gamescreen'
+		@gamestages = $ '.gamestage'
 		@loadStage = new LoadStage this
 		@stages =
 			mainmenu: new MainMenuStage this
@@ -50,10 +50,17 @@ class GameCore extends EventEmmiter
 	setLocale: (locale) ->
 		@loader.loadJson "locales/locale_#{locale}", (data) ->
 			Locale.add data
+			$('[data-text]').each ->
+				_this = $ this
+				_this.text Locale.text _this.data 'text'
 
 	setStage: (stage) ->
+		stage = @stages[stage] if typeof stage == 'string'
+		@gamestages.addClass 'hidden'
 		@stage?.unset?()
-		stage.set?()
+		if stage
+			$(".gamestage.#{stage.name}").removeClass 'hidden' if stage.name
+			stage.set?()
 		@stage = stage
 		this
 

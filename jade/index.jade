@@ -5,11 +5,17 @@ block head
 	meta(charset='utf-8')
 	meta(name="viewport" content="width=device-width, initial-scale=1.0")
 
+	style.
+		.hidden { display: none; }
+
 	link(rel='stylesheet' href='css/main.css')
 
 block content
 	include blocks/gamecanvas
-	include blocks/gamegui
+	include blocks/stages/mainmenu
+
+	+b.status
+		+e.info FPS: #[span.js-fps]
 
 	script(src='js/jquery.min.js')
 	script(src='js/matter.js')
