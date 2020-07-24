@@ -23,6 +23,7 @@ class MainMenuStage
 
 	set: ->
 		@gamecore.fill = '#99D9EA'
+		@model?.animation.reset()
 
 	draw: ->
 		@camera.x = @camera.y = 0

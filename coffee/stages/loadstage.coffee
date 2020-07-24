@@ -37,6 +37,7 @@ class LoadStage
 		@model = new Model (new ModelData).loadData @gamecore.loader, modelLoaderData
 		@model.animation.setFrame loaderAnimFrame
 		@drawstage.addNode @model, 'loader'
+		@isloaded = @isLoad = true
 
 	set: ->
 		@gamecore.fill = '#000'
@@ -51,10 +52,15 @@ class LoadStage
 		@load()
 
 	load: ->
-		@stage?.load?()
-		@gamecore.loader.on 'load', =>
-			setTimeout (=> @gamecore.setStage @stage), LOADER_DELAY
-			@gamecore.loader.off 'load'
+		if stage = @stage
+			unless stage.isLoad
+				stage.isLoad = true
+				stage.load?()
+			unless stage.isLoaded
+				@gamecore.loader.on 'load', =>
+					stage.isloaded = true
+					setTimeout (=> @gamecore.setStage stage), LOADER_DELAY
+					@gamecore.loader.off 'load'
 
 	draw: ->
 		@drawstage.draw()
